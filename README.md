@@ -1,9 +1,7 @@
 ## Welcome!
-+ Name: Jhanani Ramkumar
-+ Email: jhananiramkumar@gmail.com
-+ Major: Genetics & Genomics
+Hi! I'm Jhanani Ramkumar, a second-year Genetics & Genomics major at UC Davis minoring in Computer Science!
 
-Hi! I'm a second-year Genetics & Genomics major at UC Davis minoring in Computer Science!
++ Email: jhananiramkumar@gmail.com
 
 ## Course Overview
 I am taking BIS 015 as a required class for my major. Through this class, I will use 
