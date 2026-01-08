@@ -1,6 +1,6 @@
 ---
 title: "Lab 1 Homework"
-author: "Jhanani Ramkumar"
+author: "Your Name Here"
 date: "`r Sys.Date()`"
 output:
   html_document: 
@@ -11,15 +11,12 @@ output:
 Answer the following questions and/or complete the exercises in RMarkdown. Please embed all of your code and push the final work to your repository. Your report should be organized, clean, and run free from errors. Remember, you must remove the `#` for any included code chunks to run.  
 
 **1. Please tell us why you are taking BIS 15L.**
-I'm taking BIS15L because it's a class that's required for my major. 
 
 **2. Do you have any coding experience? If yes, please tell us what languages you have coded in and your level of experience.**
-I have little coding experience. I learnt the basics of R in my statistics class and I'm currently learning Python!
 
 **3. Navigate to the `datascibiol` repository on GitHub. Notice that near the bottom there is a description of the repository. You want something like this on your repository! It is built by making edits to the `README.md` file using RMarkdown. Edit your repository's `README.md` file so that you have an informative description, including your email address. Be creative! You don't need to just copy mine. There are lots of examples online.**  
 
 **4. Please put a link to your GitHub repository below.**
-Link: https://github.com/JhananiR/BIS15L_W26_jramkumar
 
 **5. Make sure that your repository includes the practice file `dummy_push` from lab 1.2. If you have not done so already, please add your name to this file, knit it, and push it to your repository.**  
 
