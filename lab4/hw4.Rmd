@@ -101,6 +101,5 @@ ggplot(data=msleep,
 ```
 There is a negative correlation between the hours of sleep and brain weight. As the number of hours of sleep an animals receives increases, the brain weight decreases.
 
-
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
