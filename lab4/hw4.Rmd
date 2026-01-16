@@ -35,12 +35,14 @@ ggplot(data=msleep,
   geom_bar(mapping=aes(fill=vore))+
   labs(title="# of Mammals in Each Vore Type")
 ```
+
 The herbivores are most represented in the data.
 
 **4. What is the average length of time that mammal sleeps?**
 ```{r}
 mean(msleep$sleep_total)
 ```
+
 The average length of time that mammals sleep is about 10.4 hours. 
 
 **5. Use `summary()` to get a quick idea of the range of values for the variable `bodywt`.**
@@ -66,6 +68,7 @@ ggplot(data=msleep,
   scale_y_log10()+
   labs(title="Total Sleep Time (hours) vs Body Weight (kg)")
 ```
+
 There is somewhat of a negative relationship between total sleep time and body weight. As the number of total hours of sleep increases, the body weight decreases. 
 
 **8. Which vore type tends to sleep the most? Build a plot to support your answer.**
@@ -76,6 +79,7 @@ ggplot(data=msleep,
   scale_y_log10()+
   labs(title="# of Hours of Sleep in Each Vore Type")
 ```
+
 Comparing the medians, the insectivores tend to sleep the most. 
 
 **9. Is there a relationship between brain weight and body weight? Build a plot to support your answer.**
@@ -88,6 +92,7 @@ ggplot(data=msleep,
   scale_x_log10()+
   labs(title="Body Weight (kg) vs Brain Weight (kg)")
 ```
+
 There is a positive relationship between brain weight and body weight. 
 
 **10. Build one plot of your choice that provides additional insight into the msleep dataset. Be sure to include appropriate labels and a title.**
@@ -99,6 +104,7 @@ ggplot(data=msleep,
   scale_y_log10()+
   labs(title="Total Sleep Time (hours) vs Brain Weight (kg)")
 ```
+
 There is a negative correlation between the hours of sleep and brain weight. As the number of hours of sleep an animals receives increases, the brain weight decreases.
 
 ## Knit and Upload
