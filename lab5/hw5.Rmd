@@ -139,5 +139,7 @@ filter(homerange, class == "actinopterygii", trophic.guild == "carnivore") %>%
   slice_min(mean.mass.g, n=5)
 ```
 
+The top 5 carnivorous fish species with the smallest body masses include Rusty Goby, Bluebanded Goby, Redspotted Hawkfish, Worm Pipefish, and Atlantic Salmon.
+
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
