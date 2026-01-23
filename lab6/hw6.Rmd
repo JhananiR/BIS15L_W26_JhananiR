@@ -56,7 +56,6 @@ gabon %>%
   labs(title="# of Transects for Each Land Use Type")
 ```
 
-
 **6. How does vegetation richness compare among land use types?**
 ```{r}
 ggplot(data=gabon, 
