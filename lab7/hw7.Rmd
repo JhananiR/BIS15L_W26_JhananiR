@@ -26,7 +26,7 @@ The study involved looking at tusk evolution in African elephants. Researchers o
 
 **2. Load `elephants.csv` and store it as a new object called `elephants`.**  
 ```{r}
-elephants <- read_csv("data/elephants.csv")
+elephants <- read_csv("C:/Users/jhana/OneDrive/Desktop/BIS15L_W26_JhananiR/lab7/data/elephants.csv")
 ```
 
 **3. Clean the data by converting variable names to lowercase with no spaces or special characters.**  
@@ -34,6 +34,7 @@ elephants <- read_csv("data/elephants.csv")
 elephants <- elephants %>% 
   clean_names()
 ```
+
 
 **4. Use one or more of the summary functions you have learned to get an idea of the structure of the data.** 
 ```{r}
@@ -46,45 +47,45 @@ elephants %>%
   mutate(across(c(years_of_sample_collection, elephant_id, sex), as.factor))
 ```
 
+
 **6. From which years were data collected? Show the sample periods below.**  
 ```{r}
 elephants %>% 
-  select(years_of_sample_collection)
+  distinct(years_of_sample_collection)
 ```
 
+Data was collected from 1966-1968 and from 2005-2013.
 
 **7. How many males and females were sampled in this study?**  
 ```{r}
-elephants %>% 
-  filter(sex == "m") %>% 
-  count(sex)
-```
-```{r}
-elephants %>% 
-  filter(sex == "f") %>% 
+elephants %>%
+  filter(sex %in% c("f", "m")) %>% 
   count(sex)
 ```
 
-There are 361 male elephants and 416 female elephants.
+There are 416 female elephants and 361 male elephants.
 
 **8. What is the mean, median, and standard deviation for age of males and females included in the study? Separate the results by year of sample collection. Does the sampling look even between years and sexes?**  
+
 ```{r}
 elephants %>% 
   filter(sex == "m") %>% 
-  select(years_of_sample_collection, estimated_age_years) %>% 
-  summarize(mean_estimated_age_years_m=mean(estimated_age_years, na.rm = T),
-            median_estimated_age_years_m=median(estimated_age_years, na.rm = T),
-            sd_estimated_age_years_m=sd(estimated_age_years, na.rm = T))
+  summarize(mean_estimated_age_years_m = mean(estimated_age_years, na.rm = T),
+            median_estimated_age_years_m = median(estimated_age_years, na.rm = T),
+            sd_estimated_age_years_m = sd(estimated_age_years, na.rm = T))
 ```
+
 
 ```{r}
 elephants %>% 
   filter(sex == "f") %>% 
   select(years_of_sample_collection, estimated_age_years) %>% 
-  summarize(mean_estimated_age_years_m=mean(estimated_age_years, na.rm = T),
-            median_estimated_age_years_m=median(estimated_age_years, na.rm = T),
-            sd_estimated_age_years_m=sd(estimated_age_years, na.rm = T))
+  summarize(mean_estimated_age_years_f=mean(estimated_age_years, na.rm = T),
+            median_estimated_age_years_f=median(estimated_age_years, na.rm = T),
+            sd_estimated_age_years_f=sd(estimated_age_years, na.rm = T))
 ```
+
+Male elephants in this sample are mostly young given the average age is 12-13 years. And most of the male elephants aren't sexually mature yet. Female elephants in this sample are generally older given the average age of around 18 years. So, the sample over represents mature female elephants relative to mature male elephants.
 
 **9. Is age (independent variable) a positive predictor of tusk length (dependent variable)? Create a plot that shows the relationship between these variables and add a linear model fit line.**  
 ```{r}
@@ -110,23 +111,45 @@ Yes, shoulder height is a strong, positive predictor of tusk length.
 
 **11. The authors argue that because poachers preferentially target elephants with large tusks, this has resulted in a decrease in average tusk length. Is this supported by the data? Show your code and calculations below.**  
 
+```{r}
+elephants %>% 
+  filter(years_of_sample_collection == "1966-68", !is.na(tusk_length_in_cm)) %>% 
+  summarize(mean_tusk = mean(tusk_length_in_cm, na.rm = T),
+            median_tusk = median(tusk_length_in_cm))
+```
+
+```{r}
+elephants %>% 
+  filter(years_of_sample_collection == "2005-13", !is.na(tusk_length_in_cm)) %>% 
+  summarize(mean_tusk = mean(tusk_length_in_cm, na.rm = T),
+            median_tusk = median(tusk_length_in_cm))
+```
+
+Yes, there is evidence of the average tusk decrease from 1966-1968 data compared to the 2005-2013 data.
 
 **12. Male elephants reach effective sexual maturity at 25 years while females are sexually mature at 12 years. Make a new dataframe that extracts only the males and females at sexual maturity. Then, make a plot that shows the range of tusk length between the two sample periods for these mature elephants.**   
 ```{r}
-males <- elephants %>% 
-  filter(sex == "m", estimated_age_years >= 25) %>% 
-  arrange(estimated_age_years)
-males
+mat_males <- elephants %>% 
+  filter(sex == "m" & estimated_age_years >= 25, !is.na(tusk_length_in_cm)) %>% 
+  select(sex, estimated_age_years, tusk_length_in_cm, years_of_sample_collection)
+mat_males
 ```
 
 ```{r}
-females <- elephants %>% 
-  filter(sex == "f", estimated_age_years >= 12) %>% 
-  arrange(estimated_age_years)
-females
+mat_females <- elephants %>% 
+  filter(sex == "f" & estimated_age_years >= 12, !is.na(tusk_length_in_cm)) %>% 
+  select(sex, estimated_age_years, tusk_length_in_cm, years_of_sample_collection)
+mat_females
 ```
 
+```{r}
+ggplot(data=elephants, 
+       mapping=aes(x=years_of_sample_collection, y=tusk_length_in_cm))+
+  geom_boxplot(mapping=aes(fill=sex))+
+  labs(title="Comparison of Tusk Length between 2 Sample Periods for Mature Elephants", x = "Year of Sample Collection", y = "Tusk Length (cm)")
+```
 
+In general, there is a decrease in the median tusk length in both female and male elephants when comparing between the 2 sample periods. 
 
 ## Submit the Homework
 1. Save your work and knit the .rmd file.  
