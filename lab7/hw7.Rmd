@@ -128,28 +128,23 @@ elephants %>%
 Yes, there is evidence of the average tusk decrease from 1966-1968 data compared to the 2005-2013 data.
 
 **12. Male elephants reach effective sexual maturity at 25 years while females are sexually mature at 12 years. Make a new dataframe that extracts only the males and females at sexual maturity. Then, make a plot that shows the range of tusk length between the two sample periods for these mature elephants.**   
-```{r}
-mat_males <- elephants %>% 
-  filter(sex == "m" & estimated_age_years >= 25, !is.na(tusk_length_in_cm)) %>% 
-  select(sex, estimated_age_years, tusk_length_in_cm, years_of_sample_collection)
-mat_males
-```
 
 ```{r}
-mat_females <- elephants %>% 
-  filter(sex == "f" & estimated_age_years >= 12, !is.na(tusk_length_in_cm)) %>% 
+mature_elephants <- elephants %>%
+  filter(!is.na(tusk_length_in_cm), (sex == "m" & estimated_age_years >= 25)|(sex == "f" & estimated_age_years >= 12)) %>%
   select(sex, estimated_age_years, tusk_length_in_cm, years_of_sample_collection)
-mat_females
+mature_elephants
 ```
 
+
 ```{r}
-ggplot(data=elephants, 
+ggplot(data=mature_elephants, 
        mapping=aes(x=years_of_sample_collection, y=tusk_length_in_cm))+
   geom_boxplot(mapping=aes(fill=sex))+
   labs(title="Comparison of Tusk Length between 2 Sample Periods for Mature Elephants", x = "Year of Sample Collection", y = "Tusk Length (cm)")
 ```
 
-In general, there is a decrease in the median tusk length in both female and male elephants when comparing between the 2 sample periods. 
+In general, there is a decrease in the median tusk length in both female and male mature elephants when comparing between the 2 sample periods. 
 
 ## Submit the Homework
 1. Save your work and knit the .rmd file.  
