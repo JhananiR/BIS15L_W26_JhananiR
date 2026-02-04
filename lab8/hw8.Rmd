@@ -33,11 +33,11 @@ names(fisheries_clean)
 ```
 
 ```{r}
-dim(fisheries_clean)
+str(fisheries_clean)
 ```
 
 ```{r}
-class(fisheries_clean)
+any(is.na(fisheries_clean))
 ```
 
 2. Convert the following variables to factors: `period`, `continent`, `geo_region`, `country`, `scientific_name`, `common_name`, `taxonomic_code`, and `status`.
@@ -54,17 +54,19 @@ fisheries_clean %>%
 4. How many countries are represented in the data?
 ```{r}
 fisheries_clean %>% 
-  filter(n_distinct(country))
+  summarize(num_country = n_distinct(country))
 ```
+
+There are 249 countries represented in the data.
 
 5. The variables `common_name` and `taxonomic_code` both refer to species. How many unique species are represented in the data based on each of these variables? Are the numbers the same or different?
 ```{r}
 fisheries_clean %>% 
-  group_by(common_name, taxonomic_code) %>% 
-  count()
+  summarize(num_common_name = n_distinct(common_name), num_taxonomic_code = n_distinct(taxonomic_code))
 ```
 
-All the numbers are different for species caught.
+The numbers are slightly different between the number of species under 'common_name' and 'taxonomic_code'.
+
 6. In 2023, what were the top five countries that had the highest overall catch?
 ```{r}
 fisheries_clean %>% 
@@ -75,7 +77,7 @@ fisheries_clean %>%
   slice_head(n = 5)
 ```
 
-Countries that had the highest overall catch include China, Indonesia, India, Russian Federation, and the US.
+Top 5 countries that had the highest overall catch include China, Indonesia, India, Russian Federation, and the US.
 
 7. In 2023, what were the top 10 most caught species? To keep things simple, assume `common_name` is sufficient to identify species. What does `NEI` stand for in some of the common names? How might this be concerning from a fisheries management perspective?
 ```{r}
@@ -87,30 +89,49 @@ fisheries_clean %>%
   slice_head(n = 10)
 ```
 
-NEI can mean that not all catches are identified to that specific species. This might be concerning as the number of catches and or analyzations that come from each species might have a mix of other species as well. 
+NEI stands for Not Elsewhere Included. It means that not all catches are identified to that specific species and rather grouped into a general category. From the fisheries management perspective, very specific population trends can't be analyzed due to this. Vulnerable species may go unnoticed if they are grouped with the more abundant species.
 
 8. For the species that was caught the most above (not NEI), which country had the highest catch in 2023?
 ```{r}
 fisheries_clean %>% 
-  filter(period=="2023") %>%
-  filter(common_name=="Alaska pollock(=Walleye poll.)") %>% 
+  filter(period=="2023", 
+         common_name=="Alaska pollock(=Walleye poll.)") %>% 
   group_by(country) %>% 
   summarize(overall_catch = sum(catch, na.rm = T)) %>% 
   arrange(desc(overall_catch)) %>% 
   slice_head(n = 10)
 ```
 
-Excluding the NEI species, the highest number of catches was in the Alaska pollock(=Walleye poll.) species. When only looking at this species, the Russian Federation had the highest catch. 
+Excluding the NEI, the species that was caught the most was the Alaska pollock(=Walleye poll.). When only looking at this species, the Russian Federation had the highest catch. 
 
 9. How has fishing of this species changed over the last decade (2013-2023)? Create a plot showing total catch by year for this species.
 ```{r}
-
+fisheries_clean %>% 
+  filter(common_name == "Alaska pollock(=Walleye poll.)",
+         period >= 2013, 
+         period <= 2023) %>% 
+  group_by(period) %>% 
+  summarize(overall_catch = sum(catch, na.rm = T)) %>% 
+  ggplot(aes(x = period, y = overall_catch))+
+  geom_point()+
+  geom_smooth(method="lm", se = TRUE)+
+  labs(title = "Total Alaska Pollock Catch (2013-2023)", x = "Year", y = "Total Catch")
 ```
+
+Overall, fishing for this specific species has increased in a decade.
 
 10. Perform one exploratory analysis of your choice. Make sure to clearly state the question you are asking before writing any code.
-```{r}
 
+Which countries have the greatest species diversity in their catches? List the top 10 countries.
+```{r}
+fisheries_clean %>% 
+  group_by(country) %>% 
+  summarize(species = n_distinct(common_name)) %>% 
+  arrange(desc(species)) %>% 
+  slice_head(n=10)
 ```
+
+The country with the greatest species diversity in their catches is Spain, followed by the United States and Portugal.
 
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  

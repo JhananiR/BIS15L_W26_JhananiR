@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Your Name Here" />
+<meta name="author" content="Jhanani Ramkumar" />
 
-<meta name="date" content="2026-02-01" />
+<meta name="date" content="2026-02-03" />
 
 <title>Homework 8</title>
 
@@ -375,8 +375,8 @@ display: none;
 
 
 <h1 class="title toc-ignore">Homework 8</h1>
-<h4 class="author">Your Name Here</h4>
-<h4 class="date">2026-02-01</h4>
+<h4 class="author">Jhanani Ramkumar</h4>
+<h4 class="date">2026-02-03</h4>
 
 </div>
 
@@ -393,7 +393,7 @@ code chunks to run.</p>
 <h2>Load the libraries</h2>
 <pre class="r"><code>library(&quot;tidyverse&quot;)
 library(&quot;janitor&quot;)
-library(&quot;naniar&quot;)
+#library(&quot;naniar&quot;)
 options(scipen = 999)</code></pre>
 </div>
 <div id="about-the-data" class="section level2">
@@ -406,37 +406,209 @@ script.</p>
 <code>fisheries_clean</code>.</p>
 <pre class="r"><code>fisheries_clean &lt;- read_csv(&quot;data/fisheries_clean.csv&quot;)</code></pre>
 <ol style="list-style-type: decimal">
-<li><p>Explore the data. What are the names of the variables, what are
-the dimensions, are there any NA’s, what are the classes of the
-variables, etc.? You may use the functions that you prefer.</p></li>
-<li><p>Convert the following variables to factors: <code>period</code>,
+<li>Explore the data. What are the names of the variables, what are the
+dimensions, are there any NA’s, what are the classes of the variables,
+etc.? You may use the functions that you prefer.</li>
+</ol>
+<pre class="r"><code>names(fisheries_clean)</code></pre>
+<pre><code>## [1] &quot;period&quot;          &quot;continent&quot;       &quot;geo_region&quot;      &quot;country&quot;        
+## [5] &quot;scientific_name&quot; &quot;common_name&quot;     &quot;taxonomic_code&quot;  &quot;catch&quot;          
+## [9] &quot;status&quot;</code></pre>
+<pre class="r"><code>str(fisheries_clean)</code></pre>
+<pre><code>## spc_tbl_ [1,055,015 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ period         : num [1:1055015] 1950 1951 1952 1953 1954 ...
+##  $ continent      : chr [1:1055015] &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
+##  $ geo_region     : chr [1:1055015] &quot;Southern Asia&quot; &quot;Southern Asia&quot; &quot;Southern Asia&quot; &quot;Southern Asia&quot; ...
+##  $ country        : chr [1:1055015] &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
+##  $ scientific_name: chr [1:1055015] &quot;Osteichthyes&quot; &quot;Osteichthyes&quot; &quot;Osteichthyes&quot; &quot;Osteichthyes&quot; ...
+##  $ common_name    : chr [1:1055015] &quot;Freshwater fishes NEI&quot; &quot;Freshwater fishes NEI&quot; &quot;Freshwater fishes NEI&quot; &quot;Freshwater fishes NEI&quot; ...
+##  $ taxonomic_code : chr [1:1055015] &quot;1990XXXXXXXX106&quot; &quot;1990XXXXXXXX106&quot; &quot;1990XXXXXXXX106&quot; &quot;1990XXXXXXXX106&quot; ...
+##  $ catch          : num [1:1055015] 100 100 100 100 100 200 200 200 200 200 ...
+##  $ status         : chr [1:1055015] &quot;A&quot; &quot;A&quot; &quot;A&quot; &quot;A&quot; ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   period = col_double(),
+##   ..   continent = col_character(),
+##   ..   geo_region = col_character(),
+##   ..   country = col_character(),
+##   ..   scientific_name = col_character(),
+##   ..   common_name = col_character(),
+##   ..   taxonomic_code = col_character(),
+##   ..   catch = col_double(),
+##   ..   status = col_character()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>any(is.na(fisheries_clean))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Convert the following variables to factors: <code>period</code>,
 <code>continent</code>, <code>geo_region</code>, <code>country</code>,
 <code>scientific_name</code>, <code>common_name</code>,
-<code>taxonomic_code</code>, and <code>status</code>.</p></li>
-<li><p>Are there any missing values in the data? If so, which variables
-contain missing values and how many are missing for each
-variable?</p></li>
-<li><p>How many countries are represented in the data?</p></li>
-<li><p>The variables <code>common_name</code> and
+<code>taxonomic_code</code>, and <code>status</code>.</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  mutate(across(c(period, continent, geo_region, country, scientific_name, common_name, taxonomic_code, status), as.factor))</code></pre>
+<pre><code>## # A tibble: 1,055,015 × 9
+##    period continent geo_region    country     scientific_name common_name       
+##    &lt;fct&gt;  &lt;fct&gt;     &lt;fct&gt;         &lt;fct&gt;       &lt;fct&gt;           &lt;fct&gt;             
+##  1 1950   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  2 1951   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  3 1952   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  4 1953   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  5 1954   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  6 1955   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  7 1956   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  8 1957   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+##  9 1958   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+## 10 1959   Asia      Southern Asia Afghanistan Osteichthyes    Freshwater fishes…
+## # ℹ 1,055,005 more rows
+## # ℹ 3 more variables: taxonomic_code &lt;fct&gt;, catch &lt;dbl&gt;, status &lt;fct&gt;</code></pre>
+<p>##3. Are there any missing values in the data? If so, which variables
+contain missing values and how many are missing for each variable?</p>
+<ol start="4" style="list-style-type: decimal">
+<li>How many countries are represented in the data?</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  summarize(num_country = n_distinct(country))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   num_country
+##         &lt;int&gt;
+## 1         249</code></pre>
+<p>There are 249 countries represented in the data.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>The variables <code>common_name</code> and
 <code>taxonomic_code</code> both refer to species. How many unique
 species are represented in the data based on each of these variables?
-Are the numbers the same or different?</p></li>
-<li><p>In 2023, what were the top five countries that had the highest
-overall catch?</p></li>
-<li><p>In 2023, what were the top 10 most caught species? To keep things
+Are the numbers the same or different?</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  summarize(num_common_name = n_distinct(common_name), num_taxonomic_code = n_distinct(taxonomic_code))</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   num_common_name num_taxonomic_code
+##             &lt;int&gt;              &lt;int&gt;
+## 1            3390               3722</code></pre>
+<p>The numbers are slightly different between the number of species
+under ‘common_name’ and ‘taxonomic_code’.</p>
+<ol start="6" style="list-style-type: decimal">
+<li>In 2023, what were the top five countries that had the highest
+overall catch?</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  filter(period==&quot;2023&quot;) %&gt;% 
+  group_by(country) %&gt;% 
+  summarize(overall_catch = sum(catch, na.rm = T)) %&gt;% 
+  arrange(desc(overall_catch)) %&gt;% 
+  slice_head(n = 5)</code></pre>
+<pre><code>## # A tibble: 5 × 2
+##   country                  overall_catch
+##   &lt;chr&gt;                            &lt;dbl&gt;
+## 1 China                        13424705.
+## 2 Indonesia                     7820833.
+## 3 India                         6177985.
+## 4 Russian Federation            5398032 
+## 5 United States of America      4623694</code></pre>
+<p>Top 5 countries that had the highest overall catch include China,
+Indonesia, India, Russian Federation, and the US.</p>
+<ol start="7" style="list-style-type: decimal">
+<li>In 2023, what were the top 10 most caught species? To keep things
 simple, assume <code>common_name</code> is sufficient to identify
 species. What does <code>NEI</code> stand for in some of the common
 names? How might this be concerning from a fisheries management
-perspective?</p></li>
-<li><p>For the species that was caught the most above (not NEI), which
-country had the highest catch in 2023?</p></li>
-<li><p>How has fishing of this species changed over the last decade
-(2013-2023)? Create a plot showing total catch by year for this
-species.</p></li>
-<li><p>Perform one exploratory analysis of your choice. Make sure to
-clearly state the question you are asking before writing any
-code.</p></li>
+perspective?</li>
 </ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  filter(period==&quot;2023&quot;) %&gt;%
+  group_by(common_name) %&gt;% 
+  summarize(overall_catch = sum(catch, na.rm = T)) %&gt;% 
+  arrange(desc(overall_catch)) %&gt;% 
+  slice_head(n = 10)</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    common_name                    overall_catch
+##    &lt;chr&gt;                                  &lt;dbl&gt;
+##  1 Marine fishes NEI                   8553907.
+##  2 Freshwater fishes NEI               5880104.
+##  3 Alaska pollock(=Walleye poll.)      3543411.
+##  4 Skipjack tuna                       2954736.
+##  5 Anchoveta(=Peruvian anchovy)        2415709.
+##  6 Blue whiting(=Poutassou)            1739484.
+##  7 Pacific sardine                     1678237.
+##  8 Yellowfin tuna                      1601369.
+##  9 Atlantic herring                    1432807.
+## 10 Scads NEI                           1344190.</code></pre>
+<p>NEI stands for Not Elsewhere Included. It means that not all catches
+are identified to that specific species and rather grouped into a
+general category. From the fisheries management perspective, very
+specific population trends can’t be analyzed due to this. Vulnerable
+species may go unnoticed if they are grouped with the more abundant
+species.</p>
+<ol start="8" style="list-style-type: decimal">
+<li>For the species that was caught the most above (not NEI), which
+country had the highest catch in 2023?</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  filter(period==&quot;2023&quot;, 
+         common_name==&quot;Alaska pollock(=Walleye poll.)&quot;) %&gt;% 
+  group_by(country) %&gt;% 
+  summarize(overall_catch = sum(catch, na.rm = T)) %&gt;% 
+  arrange(desc(overall_catch)) %&gt;% 
+  slice_head(n = 10)</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   country                               overall_catch
+##   &lt;chr&gt;                                         &lt;dbl&gt;
+## 1 Russian Federation                         1893924 
+## 2 United States of America                   1433538 
+## 3 Japan                                       122900 
+## 4 Democratic People&#39;s Republic of Korea        58730 
+## 5 Republic of Korea                            28432.
+## 6 Canada                                        5887.</code></pre>
+<p>Excluding the NEI, the species that was caught the most was the
+Alaska pollock(=Walleye poll.). When only looking at this species, the
+Russian Federation had the highest catch.</p>
+<ol start="9" style="list-style-type: decimal">
+<li>How has fishing of this species changed over the last decade
+(2013-2023)? Create a plot showing total catch by year for this
+species.</li>
+</ol>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  filter(common_name == &quot;Alaska pollock(=Walleye poll.)&quot;,
+         period &gt;= 2013, 
+         period &lt;= 2023) %&gt;% 
+  group_by(period) %&gt;% 
+  summarize(overall_catch = sum(catch, na.rm = T)) %&gt;% 
+  ggplot(aes(x = period, y = overall_catch))+
+  geom_point()+
+  geom_smooth(method=&quot;lm&quot;, se = TRUE)+
+  labs(title = &quot;Total Alaska Pollock Catch (2013-2023)&quot;, x = &quot;Year&quot;, y = &quot;Total Catch&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+<p>Overall, fishing for this specific species has increased in a
+decade.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>Perform one exploratory analysis of your choice. Make sure to
+clearly state the question you are asking before writing any code.</li>
+</ol>
+<p>Which countries have the greatest species diversity in their catches?
+List the top 10 countries.</p>
+<pre class="r"><code>fisheries_clean %&gt;% 
+  group_by(country) %&gt;% 
+  summarize(species = n_distinct(common_name)) %&gt;% 
+  arrange(desc(species)) %&gt;% 
+  slice_head(n=10)</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    country                                              species
+##    &lt;chr&gt;                                                  &lt;int&gt;
+##  1 Spain                                                    970
+##  2 United States of America                                 763
+##  3 Portugal                                                 621
+##  4 Colombia                                                 564
+##  5 France                                                   516
+##  6 United Kingdom of Great Britain and Northern Ireland     378
+##  7 Italy                                                    377
+##  8 New Zealand                                              364
+##  9 Russian Federation                                       354
+## 10 Ecuador                                                  349</code></pre>
+<p>The country with the greatest species diversity in their catches is
+Spain, followed by the United States and Portugal.</p>
 </div>
 <div id="knit-and-upload" class="section level2">
 <h2>Knit and Upload</h2>
