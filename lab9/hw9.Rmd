@@ -1,6 +1,6 @@
 ---
 title: "Homework 9"
-author: "Your Name Here"
+author: "Jhanani Ramkumar"
 date: "`r Sys.Date()`"
 output:
   html_document: 
@@ -29,22 +29,22 @@ This homework loosely follows the tutorial of [R Ladies Sydney](https://rladiess
 
 1. Start by loading the data `sydneybeaches`. Do some exploratory analysis to get an idea of the data structure.
 ```{r}
-
+sydneybeaches <- read_csv("data/sydneybeaches.csv")
+sydneybeaches
 ```
 
 2. Are these data "tidy" per the definitions of the tidyverse? How do you know? Are they in wide or long format?
-```{r}
-
-```
+Not really tidy yet. They are in the long format as there are several "values" that are repeated. 
 
 3. We are only interested in the variables site, date, and enterococci_cfu_100ml. Make a new object focused on these variables only. Name the object `sydneybeaches_long`
 ```{r}
-
+sydneybeaches_long <- sydneybeaches %>% 
+  
 ```
 
 4. Pivot the data such that the dates are column names and each beach only appears once (wide format). Name the object `sydneybeaches_wide`
 ```{r}
-
+sydneybeaches_wide <- sydneybeaches_long
 ```
 
 5. Pivot the data back so that the dates are data and not column names.
