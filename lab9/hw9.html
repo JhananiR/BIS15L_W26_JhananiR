@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Your Name Here" />
+<meta name="author" content="Jhanani Ramkumar" />
 
-<meta name="date" content="2026-02-04" />
+<meta name="date" content="2026-02-05" />
 
 <title>Homework 9</title>
 
@@ -375,8 +375,8 @@ display: none;
 
 
 <h1 class="title toc-ignore">Homework 9</h1>
-<h4 class="author">Your Name Here</h4>
-<h4 class="date">2026-02-04</h4>
+<h4 class="author">Jhanani Ramkumar</h4>
+<h4 class="date">2026-02-05</h4>
 
 </div>
 
@@ -410,30 +410,114 @@ the number of viable bacteria in a sample <a href="https://en.wikipedia.org/wiki
 <p>This homework loosely follows the tutorial of <a href="https://rladiessydney.org/">R Ladies Sydney</a>. If you get stuck,
 check it out!</p>
 <ol style="list-style-type: decimal">
-<li><p>Start by loading the data <code>sydneybeaches</code>. Do some
-exploratory analysis to get an idea of the data structure.</p></li>
+<li>Start by loading the data <code>sydneybeaches</code>. Do some
+exploratory analysis to get an idea of the data structure.</li>
+</ol>
+<pre class="r"><code>sydneybeaches &lt;- read_csv(&quot;data/sydneybeaches.csv&quot;) %&gt;% 
+  clean_names()</code></pre>
+<pre><code>## Rows: 3690 Columns: 8
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): Region, Council, Site, Date
+## dbl (4): BeachId, Longitude, Latitude, Enterococci (cfu/100ml)
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li><p>Are these data “tidy” per the definitions of the tidyverse? How
-do you know? Are they in wide or long format?</p></li>
+do you know? Are they in wide or long format? The data is tidy as each
+variable has its own column but it’s just in the long format.</p></li>
 <li><p>We are only interested in the variables site, date, and
 enterococci_cfu_100ml. Make a new object focused on these variables
 only. Name the object <code>sydneybeaches_long</code></p></li>
-<li><p>Pivot the data such that the dates are column names and each
-beach only appears once (wide format). Name the object
-<code>sydneybeaches_wide</code></p></li>
-<li><p>Pivot the data back so that the dates are data and not column
-names.</p></li>
-<li><p>We haven’t dealt much with dates yet, but separate the date into
-columns day, month, and year. Do this on the
-<code>sydneybeaches_long</code> data.</p></li>
-<li><p>What is the average <code>enterococci_cfu_100ml</code> by year
-for each beach. Think about which data you will use- long or
-wide.</p></li>
-<li><p>Make the output from question 7 easier to read by pivoting it to
-wide format.</p></li>
-<li><p>What was the most polluted beach in 2013?</p></li>
-<li><p>Explore the data! Do one analysis of your choice that includes a
-minimum of three lines of code.</p></li>
 </ol>
+<pre class="r"><code>sydneybeaches_long &lt;- sydneybeaches %&gt;%
+  select(site, date, enterococci_cfu_100ml)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Pivot the data such that the dates are column names and each beach
+only appears once (wide format). Name the object
+<code>sydneybeaches_wide</code></li>
+</ol>
+<pre class="r"><code>sydneybeaches_wide &lt;- sydneybeaches_long %&gt;% 
+    pivot_wider(
+      names_from =&quot;date&quot;,
+      values_from = &quot;enterococci_cfu_100ml&quot;
+    )</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Pivot the data back so that the dates are data and not column
+names.</li>
+</ol>
+<pre class="r"><code>sydneybeaches_long &lt;- sydneybeaches_wide %&gt;% 
+  pivot_longer(
+    -site,
+    names_to = &quot;date&quot;,
+    values_to = &quot;enterococci_cfu_100ml&quot;)</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>We haven’t dealt much with dates yet, but separate the date into
+columns day, month, and year. Do this on the
+<code>sydneybeaches_long</code> data.</li>
+</ol>
+<pre class="r"><code>sydneybeaches_long &lt;- sydneybeaches_long %&gt;% 
+  separate(date, 
+           into=c(&quot;year&quot;,&quot;month&quot;,&quot;day&quot;), sep=&quot;/&quot;)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>What is the average <code>enterococci_cfu_100ml</code> by year for
+each beach. Think about which data you will use- long or wide.</li>
+</ol>
+<pre class="r"><code>avg_enterococci_year &lt;- sydneybeaches_long %&gt;% 
+  group_by(site, year) %&gt;% 
+  summarize(avg_enterococci = mean(enterococci_cfu_100ml, na.rm = T))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;site&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Make the output from question 7 easier to read by pivoting it to
+wide format.</li>
+</ol>
+<pre class="r"><code>avg_entercocci_year_wide &lt;- avg_enterococci_year %&gt;% 
+  pivot_wider(
+    names_from = &quot;year&quot;,
+    values_from = &quot;avg_enterococci&quot;
+  )</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>What was the most polluted beach in 2013?</li>
+</ol>
+<pre class="r"><code>sydneybeaches_long %&gt;% 
+  filter(year == &quot;13&quot;) %&gt;% 
+  arrange(desc(enterococci_cfu_100ml)) %&gt;% 
+  slice_head(n=1)</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   site          year  month day   enterococci_cfu_100ml
+##   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                 &lt;dbl&gt;
+## 1 Malabar Beach 13    02    2018                    320</code></pre>
+<p>In 2013, the most polluted beach was the Malabar Beach with
+enterococci counts of 320.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>Explore the data! Do one analysis of your choice that includes a
+minimum of three lines of code.<br />
+Which month usually has the highest average enterococci levels across
+all beaches?</li>
+</ol>
+<pre class="r"><code>sydneybeaches_long %&gt;% 
+  group_by(month) %&gt;% 
+  summarize(avg_enterococci = mean(enterococci_cfu_100ml, na.rm = T)) %&gt;% 
+  arrange(desc(avg_enterococci))</code></pre>
+<pre><code>## # A tibble: 12 × 2
+##    month avg_enterococci
+##    &lt;chr&gt;           &lt;dbl&gt;
+##  1 12              83.6 
+##  2 06              68.2 
+##  3 02              53.6 
+##  4 01              42.6 
+##  5 04              41.5 
+##  6 03              35.1 
+##  7 10              26.3 
+##  8 05              22.8 
+##  9 11              17.8 
+## 10 07              10.4 
+## 11 09               9.36
+## 12 08               8.89</code></pre>
+<p>It seems that December has the highest average enterococci levels,
+which means it’s the riskiest month overall to visit these beaches!</p>
 </div>
 <div id="knit-and-upload" class="section level2">
 <h2>Knit and Upload</h2>

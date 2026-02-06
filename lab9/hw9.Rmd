@@ -29,62 +29,81 @@ This homework loosely follows the tutorial of [R Ladies Sydney](https://rladiess
 
 1. Start by loading the data `sydneybeaches`. Do some exploratory analysis to get an idea of the data structure.
 ```{r}
-sydneybeaches <- read_csv("data/sydneybeaches.csv")
-sydneybeaches
+sydneybeaches <- read_csv("data/sydneybeaches.csv") %>% 
+  clean_names()
 ```
 
 2. Are these data "tidy" per the definitions of the tidyverse? How do you know? Are they in wide or long format?
-Not really tidy yet. They are in the long format as there are several "values" that are repeated. 
+The data is tidy as each variable has its own column but it's just in the long format. 
+
 
 3. We are only interested in the variables site, date, and enterococci_cfu_100ml. Make a new object focused on these variables only. Name the object `sydneybeaches_long`
 ```{r}
 sydneybeaches_long <- sydneybeaches %>%
-  select(Site, Date, `Enterococci (cfu/100ml)`)
+  select(site, date, enterococci_cfu_100ml)
 ```
 
 4. Pivot the data such that the dates are column names and each beach only appears once (wide format). Name the object `sydneybeaches_wide`
 ```{r}
 sydneybeaches_wide <- sydneybeaches_long %>% 
-    pivot_wider(names_from ="Date",
-              values_from = "Enterococci (cfu/100ml)")
+    pivot_wider(
+      names_from ="date",
+      values_from = "enterococci_cfu_100ml"
+    )
 ```
 
 5. Pivot the data back so that the dates are data and not column names.
 ```{r}
-sydneybeaches_wide %>% 
-  pivot_longer(-Site,
-               names_to = "Date",
-               values_to = "Enterococci (cfu/100ml)")
+sydneybeaches_long <- sydneybeaches_wide %>% 
+  pivot_longer(
+    -site,
+    names_to = "date",
+    values_to = "enterococci_cfu_100ml")
 ```
 
 6. We haven't dealt much with dates yet, but separate the date into columns day, month, and year. Do this on the `sydneybeaches_long` data.
 ```{r}
-
+sydneybeaches_long <- sydneybeaches_long %>% 
+  separate(date, 
+           into=c("year","month","day"), sep="/")
 ```
 
 7. What is the average `enterococci_cfu_100ml` by year for each beach. Think about which data you will use- long or wide.
 ```{r}
-
+avg_enterococci_year <- sydneybeaches_long %>% 
+  group_by(site, year) %>% 
+  summarize(avg_enterococci = mean(enterococci_cfu_100ml, na.rm = T))
 ```
 
 8. Make the output from question 7 easier to read by pivoting it to wide format.
 ```{r}
-
+avg_entercocci_year_wide <- avg_enterococci_year %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = "avg_enterococci"
+  )
 ```
 
 9. What was the most polluted beach in 2013?
 ```{r}
-
+sydneybeaches_long %>% 
+  filter(year == "13") %>% 
+  arrange(desc(enterococci_cfu_100ml)) %>% 
+  slice_head(n=1)
 ```
 
-```{r}
-
-```
+In 2013, the most polluted beach was the Malabar Beach with enterococci counts of 320.
 
 10. Explore the data! Do one analysis of your choice that includes a minimum of three lines of code.  
+Which month usually has the highest average enterococci levels across all beaches?
 ```{r}
-
+sydneybeaches_long %>% 
+  group_by(month) %>% 
+  summarize(avg_enterococci = mean(enterococci_cfu_100ml, na.rm = T)) %>% 
+  arrange(desc(avg_enterococci))
 ```
+
+It seems that December has the highest average enterococci levels, which means it's the riskiest month overall to visit these beaches!
 
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
