@@ -34,37 +34,66 @@ sharks <-
 ## Questions
 1. Are there any "hotspots" for shark incidents in California? Show the top five counties with the most incidents.
 ```{r}
-sharks %>% 
+sharks %>%
   arrange(desc(county)) %>% 
   slice_head(n=5)
 ```
 
+
 2.  Make a plot that shows the total number of incidents per county.
 ```{r}
-sharks %>% 
-  ggplot(aes(x=county, fill=incident_num))+
-  geom_bar()+
+sharks %>%
+  filter(!is.na(county)) %>% 
+  count(county, name = "total_incidents") %>%              
+  ggplot(aes(x = reorder(county, total_incidents), y = total_incidents)) +
+  geom_col()+
   coord_flip()+
-  labs(title = "Total Number of Incidents per County", x="County", y=NULL)
+  labs(title = "Total Number of Incidents per County", x="County", y="Number of Incidents")
 ```
 
 3. Are there months of the year when incidents are more likely to occur? Make a plot that shows the total number of incidents by month. Which month has the highest number of incidents?  
 ```{r}
-
+sharks %>% 
+  filter(!is.na(month)) %>%
+  count(month, name = "total_incidents") %>%
+  ggplot(aes(x = reorder(month, total_incidents),
+             y = total_incidents)) +
+  geom_col()+
+  labs(title = "Total Incidents by Month",
+    x = "Month",
+    y = "Number of Incidents")
 ```
 
-```{r}
-
-```
+October has the higest number of total incidents.
 
 4. Is there a time of day when most attacks occur? Make a plot that shows the total number of incidents by time of day. Which time of day has the highest number of incidents?  
 ```{r}
-
+sharks %>% 
+  filter(!is.na(time)) %>%
+  count(time, name = "total_incidents") %>%
+  ggplot(aes(x = reorder(time, total_incidents),
+             y = total_incidents)) +
+  geom_col()+
+  coord_flip()+
+  labs(title = "Incidents by Time of Day", x = "Time of Day",y = "Number of Incidents")
 ```
+
+Around 11am is when the number of incidents are high.
 
 5. How do the number and types of injuries compare by county? Make a table that shows the number of injury types by county. Which county has the highest number incidents? (hint: your table should be in wide format)
 ```{r}
+sharks_wide <- sharks %>% 
+  group_by(county, injury) %>% 
+  summarize(na.rm=T, total = n()) %>% 
+  pivot_wider(names_from = injury, values_from = total)
+sharks_wide
+```
 
+```{r}
+
+sharks %>% 
+  filter(!is.na(county)) %>% 
+  count(county, sort = TRUE)
 ```
 
 6. Use the table from #5 to make a plot that shows the total number of incidents by county.
@@ -74,23 +103,55 @@ sharks %>%
 
 7. In the data, `mode` refers to a type of activity. Which activity is associated with the highest number of incidents?
 ```{r}
-
+sharks %>% 
+  filter(!is.na(mode)) %>% 
+  count(mode, sort = TRUE)
 ```
+
+Surfing/Boarding is associated with higest number of incidents.
 
 8. Make a plot that compares the number of incidents by activity.
 ```{r}
+sharks %>%
+  filter(!is.na(mode)) %>%
+  count(mode, name = "total_incidents") %>%
+  ggplot(aes(x = reorder(mode, total_incidents), y = total_incidents)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Incidents by Activity",
+    x = "Activity",
+    y = "Number of Incidents"
+  )
 
 ```
 
 9. Which shark species is involved in the highest number of incidents?  
 ```{r}
-
+sharks %>%
+  filter(!is.na(species)) %>%
+  count(species, sort = TRUE)
 ```
+
+The Great White shark species is involved in the highest number of incidents (181).
 
 10. Are all incidents involving Great White's fatal? Make a plot that shows the number and types of incidents for Great White's only.  
 ```{r}
-
+sharks %>% 
+  filter(species == "White") %>% 
+  mutate(injury = ifelse(injury == "none" | injury == "none*", "None", injury)) %>% 
+  count(injury, name = "total_incidents") %>% 
+  ggplot(aes(x=reorder(injury, total_incidents), y = total_incidents))+
+  geom_col()+
+  coord_flip()+
+  labs(
+    title = "Great White Shark Incidents by Injury Type",
+    x = "Injury Type",
+    y = "Number of Incidents"
+  )
 ```
+
+When looking at the incidents caused by the Great White Shark, most are not fatal and many have no injury at all.
 
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean! 
