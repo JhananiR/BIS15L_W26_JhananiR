@@ -67,12 +67,17 @@ p + theme_linedraw()+
 ## Practice
 1. Build a scatterplot that compares `log10_mass` and `log10_preymass`. Store this plot as object `q`.
 ```{r}
-
+q <- homerange %>% 
+  drop_na(log10_mass, log10_preymass) %>% 
+  ggplot(aes(x=log10_mass, y=log10_preymass, color=thermoregulation))+
+  geom_point()+
+  geom_smooth(method="lm", se=F, color="red")
+q
 ```
 
 2. Use plot `q` but add the classic theme.
 ```{r}
-
+q + theme_classic()
 ```
 
 ## Legends
@@ -90,7 +95,7 @@ p+theme_linedraw()+
 ## Not enough? Try using `ggthemes`
 There are many packages that include additional themes, one of which is [ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/). Some of these are nice because they are designed to mimic the look of popular publications.
 ```{r}
-#install.packages("ggthemes")
+install.packages("ggthemes")
 library(ggthemes)
 ```
 
@@ -113,7 +118,7 @@ p +
 ## Practice
 1. Use plot `q` and try a theme of your choice.
 ```{r}
-
+q + theme_solarized()
 ```
 
 ## RColorBrewer
@@ -126,7 +131,7 @@ Access the help for `RColorBrewer`.
 
 The thing to notice is that there are three different color palettes: 1) sequential, 2) diverging, and 3) qualitative. Within each of these there are several selections. You can bring up the colors by using `display.brewer.pal()`. Specify the number of colors that you want and the palette name.
 ```{r}
-display.brewer.pal(9,"Set1") #qualitative palette
+display.brewer.pal(8,"Accent") #qualitative palette
 ```
 
 The [R Color Brewer](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) website is very helpful for getting an idea of the color palettes. To make things easy, use these two guidelines:
@@ -136,7 +141,7 @@ The [R Color Brewer](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) w
 
 Here I chose the `Set2` palette. Take a moment and experiment with other options.
 ```{r}
-p+scale_fill_brewer(palette = "Set1")+
+p+scale_fill_brewer(palette = "Accent")+
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 60, hjust=1))+
   labs(title = "Observations by Taxon in Homerange Data",
@@ -148,7 +153,8 @@ p+scale_fill_brewer(palette = "Set1")+
 ## Practice
 1. Keep using the `same `q` plot, but test out one of R Color Brewer palettes.
 ```{r}
-
+q+theme_classic()+
+  scale_color_brewer(palette = "Set2")
 ```
 
 ## Paleteer
@@ -191,7 +197,8 @@ show_col(my_cols)
 ## Practice
 1. Keep using the `same `q` plot, but test out one of `paleteer` themes.
 ```{r}
-
+q+theme_classic()+
+  scale_color_manual(values=my_cols)
 ```
 
 ## Faceting
@@ -205,12 +212,24 @@ homerange %>%
 
 `facet_wrap()` makes a ribbon of panels by a specified categorical variable and allows you to control how you want them arranged.  
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=taxon, y=log10_mass, fill=thermoregulation))+
+  geom_boxplot()+
+  facet_wrap(~trophic_guild, ncol=2, labeller=label_both)+
+  theme(axis.text.x=element_text(angle=60, hjust=1),
+        legend.position = "none",
+        strip.text=element_text(size=12, face="bold"))
 ```
 
 `facet_grid()` allows control over the faceted variable; it can be arranged in rows or columns. rows~columns. 
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=taxon, y=log10_mass, fill=thermoregulation))+
+  geom_boxplot()+
+  facet_grid(.~thermoregulation, labeller=label_both)+
+  theme(axis.text.x=element_text(angle=60, hjust=1),
+        legend.position = "none",
+        strip.text=element_text(size=12, face="bold"))
 ```
 
 ```{r}
@@ -219,18 +238,30 @@ homerange %>%
 
 `facet_grid()` will also allow the comparison of two categorical variables, just remember a~b where a is rows and b is columns.  
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=taxon, y=log10_mass, fill=thermoregulation))+
+  geom_boxplot()+
+  facet_grid(trophic_guild~thermoregulation, labeller=label_both)+
+  theme(axis.text.x=element_text(angle=60, hjust=1),
+        legend.position = "none",
+        strip.text=element_text(size=8, face="bold"))
 ```
 
 ## Practice
 1. Use facet_wrap to compare the distribution of `log10_mass` by `thermoregulation`.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=log10_mass))+
+  geom_density(fill="lightblue")+
+  facet_wrap(~thermoregulation, ncol=2, labeller=label_both)
 ```
 
 2. Use facet_grid to compare the distribution of `log10_hra` by `locomotion` and `thermoregulation`.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=log10_hra))+
+  geom_density(fill="lightblue")+
+  facet_grid(thermoregulation~locomotion, labeller=label_both)
 ```
 
 ## Wrap-up  
