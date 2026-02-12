@@ -106,17 +106,18 @@ sharks_wide
 
 ```{r}
 sharks_new_wide <- sharks_wide %>%
-  mutate(total_incidents = 
-           ifelse(is.na(minor), 0, minor) +
-           ifelse(is.na(none), 0, none) +
-           ifelse(is.na(major), 0, major) +
-           ifelse(is.na(fatal), 0, fatal)
-         )
+  mutate(
+    total_incidents = 
+      ifelse(is.na(minor), 0, minor) +
+      ifelse(is.na(none), 0, none) +
+      ifelse(is.na(major), 0, major) +
+      ifelse(is.na(fatal), 0, fatal)
+  )
 sharks_new_wide %>%
   arrange(desc(total_incidents))
 ```
 
-The county with the highest number of incidents in San Diego.
+The county with the highest number of incidents is San Diego.
 
 6. Use the table from #5 to make a plot that shows the total number of incidents by county.
 ```{r}
@@ -134,7 +135,7 @@ sharks %>%
   count(mode, sort = TRUE)
 ```
 
-Surfing/Boarding is associated with highest number of incidents.
+Surfing/Boarding is associated with the highest number of incidents.
 
 8. Make a plot that compares the number of incidents by activity.
 ```{r}
@@ -177,7 +178,7 @@ sharks %>%
   )
 ```
 
-When looking at the incidents caused by the Great White Shark, most are not fatal and many have no injury at all.
+When looking at the incidents caused by the Great White Shark, most are not fatal and have no injury at all.
 
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean! 
