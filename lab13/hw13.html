@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Your Name Here" />
+<meta name="author" content="Jhanani Ramkumar" />
 
-<meta name="date" content="2026-02-18" />
+<meta name="date" content="2026-02-21" />
 
 <title>Homework 13</title>
 
@@ -375,8 +375,8 @@ display: none;
 
 
 <h1 class="title toc-ignore">Homework 13</h1>
-<h4 class="author">Your Name Here</h4>
-<h4 class="date">2026-02-18</h4>
+<h4 class="author">Jhanani Ramkumar</h4>
+<h4 class="date">2026-02-21</h4>
 
 </div>
 
@@ -408,24 +408,341 @@ birds, mammals, and reptiles.” <em>Ecology</em>, <em>96</em>, 3109. doi:
 <pre class="r"><code>amniota &lt;- read_csv(&quot;data/amniota.csv&quot;) %&gt;% 
   clean_names()</code></pre>
 <ol style="list-style-type: decimal">
-<li><p>Do some exploratory analysis of the <code>amniota</code> data
-set. Use the function(s) of your choice. Try to get an idea of how NA’s
-are represented in the data.</p></li>
-<li><p>Make any necessary replacements in the data such that all NA’s
-appear as “NA”.</p></li>
-<li><p>How many total NA’s are in the data set? Use the package
+<li>Do some exploratory analysis of the <code>amniota</code> data set.
+Use the function(s) of your choice. Try to get an idea of how NA’s are
+represented in the data.</li>
+</ol>
+<pre class="r"><code>glimpse(amniota)</code></pre>
+<pre><code>## Rows: 21,322
+## Columns: 36
+## $ class                                 &lt;chr&gt; &quot;Aves&quot;, &quot;Aves&quot;, &quot;Aves&quot;, &quot;Aves&quot;, …
+## $ order                                 &lt;chr&gt; &quot;Accipitriformes&quot;, &quot;Accipitrifor…
+## $ family                                &lt;chr&gt; &quot;Accipitridae&quot;, &quot;Accipitridae&quot;, …
+## $ genus                                 &lt;chr&gt; &quot;Accipiter&quot;, &quot;Accipiter&quot;, &quot;Accip…
+## $ species                               &lt;chr&gt; &quot;albogularis&quot;, &quot;badius&quot;, &quot;bicolo…
+## $ subspecies                            &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ common_name                           &lt;chr&gt; &quot;Pied Goshawk&quot;, &quot;Shikra&quot;, &quot;Bicol…
+## $ female_maturity_d                     &lt;dbl&gt; -999.000, 363.468, -999.000, -99…
+## $ litter_or_clutch_size_n               &lt;dbl&gt; -999.000, 3.250, 2.700, -999.000…
+## $ litters_or_clutches_per_y             &lt;dbl&gt; -999, 1, -999, -999, 1, -999, -9…
+## $ adult_body_mass_g                     &lt;dbl&gt; 251.500, 140.000, 345.000, 142.0…
+## $ maximum_longevity_y                   &lt;dbl&gt; -999.00000, -999.00000, -999.000…
+## $ gestation_d                           &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ weaning_d                             &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ birth_or_hatching_weight_g            &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ weaning_weight_g                      &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ egg_mass_g                            &lt;dbl&gt; -999.00, 21.00, 32.00, -999.00, …
+## $ incubation_d                          &lt;dbl&gt; -999.00, 30.00, -999.00, -999.00…
+## $ fledging_age_d                        &lt;dbl&gt; -999.00, 32.00, -999.00, -999.00…
+## $ longevity_y                           &lt;dbl&gt; -999.00000, -999.00000, -999.000…
+## $ male_maturity_d                       &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ inter_litter_or_interbirth_interval_y &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ female_body_mass_g                    &lt;dbl&gt; 352.500, 168.500, 390.000, -999.…
+## $ male_body_mass_g                      &lt;dbl&gt; 223.000, 125.000, 212.000, 142.0…
+## $ no_sex_body_mass_g                    &lt;dbl&gt; -999.0, 123.0, -999.0, -999.0, -…
+## $ egg_width_mm                          &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ egg_length_mm                         &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ fledging_mass_g                       &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ adult_svl_cm                          &lt;dbl&gt; -999.00, 30.00, 39.50, -999.00, …
+## $ male_svl_cm                           &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ female_svl_cm                         &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ birth_or_hatching_svl_cm              &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ female_svl_at_maturity_cm             &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ female_body_mass_at_maturity_g        &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ no_sex_svl_cm                         &lt;dbl&gt; -999, -999, -999, -999, -999, -9…
+## $ no_sex_maturity_d                     &lt;dbl&gt; -999, -999, -999, -999, -999, -9…</code></pre>
+<p>NA’s represented as -999.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Make any necessary replacements in the data such that all NA’s
+appear as “NA”.</li>
+</ol>
+<pre class="r"><code>amniota &lt;- read_csv(&quot;data/amniota.csv&quot;,  na=&quot;-999&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+## e.g.:
+##   dat &lt;- vroom(...)
+##   problems(dat)</code></pre>
+<pre><code>## Rows: 21322 Columns: 36
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (6): class, order, family, genus, species, common_name
+## dbl (28): female_maturity_d, litter_or_clutch_size_n, litters_or_clutches_pe...
+## lgl  (2): subspecies, female_body_mass_at_maturity_g
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>glimpse(amniota)</code></pre>
+<pre><code>## Rows: 21,322
+## Columns: 36
+## $ class                                 &lt;chr&gt; &quot;Aves&quot;, &quot;Aves&quot;, &quot;Aves&quot;, &quot;Aves&quot;, …
+## $ order                                 &lt;chr&gt; &quot;Accipitriformes&quot;, &quot;Accipitrifor…
+## $ family                                &lt;chr&gt; &quot;Accipitridae&quot;, &quot;Accipitridae&quot;, …
+## $ genus                                 &lt;chr&gt; &quot;Accipiter&quot;, &quot;Accipiter&quot;, &quot;Accip…
+## $ species                               &lt;chr&gt; &quot;albogularis&quot;, &quot;badius&quot;, &quot;bicolo…
+## $ subspecies                            &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ common_name                           &lt;chr&gt; &quot;Pied Goshawk&quot;, &quot;Shikra&quot;, &quot;Bicol…
+## $ female_maturity_d                     &lt;dbl&gt; NA, 363.468, NA, NA, 363.468, NA…
+## $ litter_or_clutch_size_n               &lt;dbl&gt; NA, 3.250, 2.700, NA, 4.000, NA,…
+## $ litters_or_clutches_per_y             &lt;dbl&gt; NA, 1, NA, NA, 1, NA, NA, 1, NA,…
+## $ adult_body_mass_g                     &lt;dbl&gt; 251.500, 140.000, 345.000, 142.0…
+## $ maximum_longevity_y                   &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 19.9…
+## $ gestation_d                           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ weaning_d                             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ birth_or_hatching_weight_g            &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ weaning_weight_g                      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ egg_mass_g                            &lt;dbl&gt; NA, 21.00, 32.00, NA, 21.85, NA,…
+## $ incubation_d                          &lt;dbl&gt; NA, 30.00, NA, NA, 32.50, NA, NA…
+## $ fledging_age_d                        &lt;dbl&gt; NA, 32.00, NA, NA, 42.50, NA, NA…
+## $ longevity_y                           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 12.5…
+## $ male_maturity_d                       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 365,…
+## $ inter_litter_or_interbirth_interval_y &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ female_body_mass_g                    &lt;dbl&gt; 352.500, 168.500, 390.000, NA, 2…
+## $ male_body_mass_g                      &lt;dbl&gt; 223.000, 125.000, 212.000, 142.0…
+## $ no_sex_body_mass_g                    &lt;dbl&gt; NA, 123.0, NA, NA, NA, NA, NA, 1…
+## $ egg_width_mm                          &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ egg_length_mm                         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ fledging_mass_g                       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ adult_svl_cm                          &lt;dbl&gt; NA, 30.00, 39.50, NA, 33.50, NA,…
+## $ male_svl_cm                           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ female_svl_cm                         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ birth_or_hatching_svl_cm              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ female_svl_at_maturity_cm             &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ female_body_mass_at_maturity_g        &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ no_sex_svl_cm                         &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ no_sex_maturity_d                     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, …</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>How many total NA’s are in the data set? Use the package
 <code>naniar</code> to produce a summary, including percentages, of
-missing data in each column for the <code>amniota</code> data.</p></li>
-<li><p>Double check your replacement using <code>summary</code>. Do you
-see any other potential issues? If so, fix them.</p></li>
-<li><p>Use <code>naniar</code> to visualize the number of NA’s in each
-variable. Which variables have the most NA’s?</p></li>
-<li><p>Calculate the number of NAs in the <code>egg_mass_g</code> column
+missing data in each column for the <code>amniota</code> data.</li>
+</ol>
+<pre class="r"><code>amniota %&gt;%
+  miss_var_summary()</code></pre>
+<pre><code>## # A tibble: 36 × 3
+##    variable                       n_miss pct_miss
+##    &lt;chr&gt;                           &lt;int&gt;    &lt;num&gt;
+##  1 subspecies                      21322    100  
+##  2 female_body_mass_at_maturity_g  21322    100  
+##  3 female_svl_at_maturity_cm       21120     99.1
+##  4 fledging_mass_g                 21111     99.0
+##  5 male_svl_cm                     21040     98.7
+##  6 no_sex_maturity_d               20860     97.8
+##  7 egg_width_mm                    20727     97.2
+##  8 egg_length_mm                   20702     97.1
+##  9 weaning_weight_g                20258     95.0
+## 10 female_svl_cm                   20242     94.9
+## # ℹ 26 more rows</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Double check your replacement using <code>summary</code>. Do you see
+any other potential issues? If so, fix them.</li>
+</ol>
+<pre class="r"><code>summary(amniota)</code></pre>
+<pre><code>##     class              order              family             genus          
+##  Length:21322       Length:21322       Length:21322       Length:21322      
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##    species          subspecies     common_name        female_maturity_d 
+##  Length:21322       Mode:logical   Length:21322       Min.   :-30258.7  
+##  Class :character   NA&#39;s:21322     Class :character   1st Qu.:   288.4  
+##  Mode  :character                  Mode  :character   Median :   365.0  
+##                                                       Mean   :   691.2  
+##                                                       3rd Qu.:   819.3  
+##                                                       Max.   :  9131.2  
+##                                                       NA&#39;s   :17849     
+##  litter_or_clutch_size_n litters_or_clutches_per_y adult_body_mass_g  
+##  Min.   :  0.900         Min.   : 0.120            Min.   :        0  
+##  1st Qu.:  2.000         1st Qu.: 1.000            1st Qu.:       15  
+##  Median :  2.800         Median : 1.050            Median :       44  
+##  Mean   :  3.826         Mean   : 1.752            Mean   :    37493  
+##  3rd Qu.:  4.150         3rd Qu.: 2.000            3rd Qu.:      238  
+##  Max.   :156.000         Max.   :52.000            Max.   :149000000  
+##  NA&#39;s   :8244            NA&#39;s   :16374             NA&#39;s   :4645       
+##  maximum_longevity_y  gestation_d        weaning_d      
+##  Min.   :  0.0833    Min.   :   5.00   Min.   :   1.94  
+##  1st Qu.:  6.0000    1st Qu.:  29.91   1st Qu.:  27.75  
+##  Median : 12.3083    Median :  63.92   Median :  51.60  
+##  Mean   : 16.4657    Mean   : 105.28   Mean   : 113.05  
+##  3rd Qu.: 22.0000    3rd Qu.: 151.88   3rd Qu.: 129.83  
+##  Max.   :211.0000    Max.   :7396.92   Max.   :1826.25  
+##  NA&#39;s   :15822       NA&#39;s   :18926     NA&#39;s   :19279    
+##  birth_or_hatching_weight_g weaning_weight_g      egg_mass_g      
+##  Min.   :0.000e+00          Min.   :9.000e-01   Min.   :   0.218  
+##  1st Qu.:1.300e+00          1st Qu.:1.320e+01   1st Qu.:   2.100  
+##  Median :5.890e+00          Median :4.310e+01   Median :   5.100  
+##  Mean   :4.480e+03          Mean   :4.139e+04   Mean   :  22.252  
+##  3rd Qu.:4.385e+01          3rd Qu.:8.503e+02   3rd Qu.:  20.100  
+##  Max.   :2.250e+06          Max.   :1.700e+07   Max.   :1500.000  
+##  NA&#39;s   :17779              NA&#39;s   :20258       NA&#39;s   :15907     
+##   incubation_d     fledging_age_d   longevity_y       male_maturity_d  
+##  Min.   :   2.00   Min.   :  1.0   Min.   :  0.0833   Min.   :  30.44  
+##  1st Qu.:  17.00   1st Qu.: 16.5   1st Qu.:  5.5000   1st Qu.: 365.00  
+##  Median :  29.25   Median : 27.5   Median : 10.7000   Median : 365.25  
+##  Mean   :  46.67   Mean   : 36.8   Mean   : 13.5209   Mean   : 787.16  
+##  3rd Qu.:  59.50   3rd Qu.: 46.0   3rd Qu.: 18.2000   3rd Qu.: 913.00  
+##  Max.   :1762.00   Max.   :345.0   Max.   :177.0000   Max.   :9131.25  
+##  NA&#39;s   :17682     NA&#39;s   :19478   NA&#39;s   :15822      NA&#39;s   :19278    
+##  inter_litter_or_interbirth_interval_y female_body_mass_g  male_body_mass_g   
+##  Min.   :0.0465                        Min.   :      0.3   Min.   :      0.3  
+##  1st Qu.:0.3184                        1st Qu.:     14.0   1st Qu.:     16.5  
+##  Median :0.9993                        Median :     40.7   Median :     48.4  
+##  Mean   :0.9067                        Mean   :   2075.8   Mean   :   6196.8  
+##  3rd Qu.:1.0000                        3rd Qu.:    220.0   3rd Qu.:    245.5  
+##  Max.   :4.8467                        Max.   :3700000.0   Max.   :4545000.0  
+##  NA&#39;s   :19904                         NA&#39;s   :14113       NA&#39;s   :14679      
+##  no_sex_body_mass_g   egg_width_mm    egg_length_mm    fledging_mass_g  
+##  Min.   :        0   Min.   :  2.50   Min.   :  2.50   Min.   :   4.85  
+##  1st Qu.:       13   1st Qu.:  8.00   1st Qu.: 10.94   1st Qu.:  14.60  
+##  Median :       35   Median : 13.00   Median : 19.98   Median :  24.80  
+##  Mean   :    68952   Mean   : 22.99   Mean   : 36.40   Mean   : 452.27  
+##  3rd Qu.:      164   3rd Qu.: 35.90   3rd Qu.: 58.92   3rd Qu.: 107.00  
+##  Max.   :136000000   Max.   :125.00   Max.   :455.00   Max.   :9992.00  
+##  NA&#39;s   :11663       NA&#39;s   :20727    NA&#39;s   :20702    NA&#39;s   :21111    
+##   adult_svl_cm      male_svl_cm     female_svl_cm      birth_or_hatching_svl_cm
+##  Min.   :   1.79   Min.   :  1.57   Min.   :   1.800   Min.   :  0.400         
+##  1st Qu.:   9.50   1st Qu.: 21.41   1st Qu.:   5.756   1st Qu.:  2.450         
+##  Median :  18.50   Median : 35.85   Median :   8.150   Median :  3.300         
+##  Mean   :  38.20   Mean   : 50.44   Mean   :  20.609   Mean   : 12.099         
+##  3rd Qu.:  40.50   3rd Qu.: 63.39   3rd Qu.:  17.721   3rd Qu.:  5.256         
+##  Max.   :3049.00   Max.   :315.20   Max.   :1125.000   Max.   :759.999         
+##  NA&#39;s   :14274     NA&#39;s   :21040    NA&#39;s   :20242      NA&#39;s   :20085           
+##  female_svl_at_maturity_cm female_body_mass_at_maturity_g no_sex_svl_cm   
+##  Min.   :  2.85            Mode:logical                   Min.   :   1.7  
+##  1st Qu.:  4.90            NA&#39;s:21322                     1st Qu.:   5.7  
+##  Median :  6.00                                           Median :   7.7  
+##  Mean   : 18.69                                           Mean   :  20.0  
+##  3rd Qu.:  8.40                                           3rd Qu.:  11.0  
+##  Max.   :580.00                                           Max.   :3300.0  
+##  NA&#39;s   :21120                                            NA&#39;s   :16052   
+##  no_sex_maturity_d
+##  Min.   :   33.0  
+##  1st Qu.:  365.3  
+##  Median :  913.1  
+##  Mean   : 1604.5  
+##  3rd Qu.: 2008.9  
+##  Max.   :14610.0  
+##  NA&#39;s   :20860</code></pre>
+<p>The female maturity age column has a minimum value of -30258.7, which
+doesn’t make sense biologically. So, I’ll replace it with NA’s.</p>
+<pre class="r"><code>amniota &lt;- amniota %&gt;%
+  mutate(across(where(is.numeric), ~ifelse(. &lt; 0, NA, .)))</code></pre>
+<pre class="r"><code>summary(amniota)</code></pre>
+<pre><code>##     class              order              family             genus          
+##  Length:21322       Length:21322       Length:21322       Length:21322      
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##    species          subspecies     common_name        female_maturity_d
+##  Length:21322       Mode:logical   Length:21322       Min.   :  23.81  
+##  Class :character   NA&#39;s:21322     Class :character   1st Qu.: 289.00  
+##  Mode  :character                  Mode  :character   Median : 365.12  
+##                                                       Mean   : 726.85  
+##                                                       3rd Qu.: 819.34  
+##                                                       Max.   :9131.25  
+##                                                       NA&#39;s   :17853    
+##  litter_or_clutch_size_n litters_or_clutches_per_y adult_body_mass_g  
+##  Min.   :  0.900         Min.   : 0.120            Min.   :        0  
+##  1st Qu.:  2.000         1st Qu.: 1.000            1st Qu.:       15  
+##  Median :  2.800         Median : 1.050            Median :       44  
+##  Mean   :  3.826         Mean   : 1.752            Mean   :    37493  
+##  3rd Qu.:  4.150         3rd Qu.: 2.000            3rd Qu.:      238  
+##  Max.   :156.000         Max.   :52.000            Max.   :149000000  
+##  NA&#39;s   :8244            NA&#39;s   :16374             NA&#39;s   :4645       
+##  maximum_longevity_y  gestation_d        weaning_d      
+##  Min.   :  0.0833    Min.   :   5.00   Min.   :   1.94  
+##  1st Qu.:  6.0000    1st Qu.:  29.91   1st Qu.:  27.75  
+##  Median : 12.3083    Median :  63.92   Median :  51.60  
+##  Mean   : 16.4657    Mean   : 105.28   Mean   : 113.05  
+##  3rd Qu.: 22.0000    3rd Qu.: 151.88   3rd Qu.: 129.83  
+##  Max.   :211.0000    Max.   :7396.92   Max.   :1826.25  
+##  NA&#39;s   :15822       NA&#39;s   :18926     NA&#39;s   :19279    
+##  birth_or_hatching_weight_g weaning_weight_g      egg_mass_g      
+##  Min.   :0.000e+00          Min.   :9.000e-01   Min.   :   0.218  
+##  1st Qu.:1.300e+00          1st Qu.:1.320e+01   1st Qu.:   2.100  
+##  Median :5.890e+00          Median :4.310e+01   Median :   5.100  
+##  Mean   :4.480e+03          Mean   :4.139e+04   Mean   :  22.252  
+##  3rd Qu.:4.385e+01          3rd Qu.:8.503e+02   3rd Qu.:  20.100  
+##  Max.   :2.250e+06          Max.   :1.700e+07   Max.   :1500.000  
+##  NA&#39;s   :17779              NA&#39;s   :20258       NA&#39;s   :15907     
+##   incubation_d     fledging_age_d   longevity_y       male_maturity_d  
+##  Min.   :   2.00   Min.   :  1.0   Min.   :  0.0833   Min.   :  30.44  
+##  1st Qu.:  17.00   1st Qu.: 16.5   1st Qu.:  5.5000   1st Qu.: 365.00  
+##  Median :  29.25   Median : 27.5   Median : 10.7000   Median : 365.25  
+##  Mean   :  46.67   Mean   : 36.8   Mean   : 13.5209   Mean   : 787.16  
+##  3rd Qu.:  59.50   3rd Qu.: 46.0   3rd Qu.: 18.2000   3rd Qu.: 913.00  
+##  Max.   :1762.00   Max.   :345.0   Max.   :177.0000   Max.   :9131.25  
+##  NA&#39;s   :17682     NA&#39;s   :19478   NA&#39;s   :15822      NA&#39;s   :19278    
+##  inter_litter_or_interbirth_interval_y female_body_mass_g  male_body_mass_g   
+##  Min.   :0.0465                        Min.   :      0.3   Min.   :      0.3  
+##  1st Qu.:0.3184                        1st Qu.:     14.0   1st Qu.:     16.5  
+##  Median :0.9993                        Median :     40.7   Median :     48.4  
+##  Mean   :0.9067                        Mean   :   2075.8   Mean   :   6196.8  
+##  3rd Qu.:1.0000                        3rd Qu.:    220.0   3rd Qu.:    245.5  
+##  Max.   :4.8467                        Max.   :3700000.0   Max.   :4545000.0  
+##  NA&#39;s   :19904                         NA&#39;s   :14113       NA&#39;s   :14679      
+##  no_sex_body_mass_g   egg_width_mm    egg_length_mm    fledging_mass_g  
+##  Min.   :        0   Min.   :  2.50   Min.   :  2.50   Min.   :   4.85  
+##  1st Qu.:       13   1st Qu.:  8.00   1st Qu.: 10.94   1st Qu.:  14.60  
+##  Median :       35   Median : 13.00   Median : 19.98   Median :  24.80  
+##  Mean   :    68952   Mean   : 22.99   Mean   : 36.40   Mean   : 452.27  
+##  3rd Qu.:      164   3rd Qu.: 35.90   3rd Qu.: 58.92   3rd Qu.: 107.00  
+##  Max.   :136000000   Max.   :125.00   Max.   :455.00   Max.   :9992.00  
+##  NA&#39;s   :11663       NA&#39;s   :20727    NA&#39;s   :20702    NA&#39;s   :21111    
+##   adult_svl_cm      male_svl_cm     female_svl_cm      birth_or_hatching_svl_cm
+##  Min.   :   1.79   Min.   :  1.57   Min.   :   1.800   Min.   :  0.400         
+##  1st Qu.:   9.50   1st Qu.: 21.41   1st Qu.:   5.756   1st Qu.:  2.450         
+##  Median :  18.50   Median : 35.85   Median :   8.150   Median :  3.300         
+##  Mean   :  38.20   Mean   : 50.44   Mean   :  20.609   Mean   : 12.099         
+##  3rd Qu.:  40.50   3rd Qu.: 63.39   3rd Qu.:  17.721   3rd Qu.:  5.256         
+##  Max.   :3049.00   Max.   :315.20   Max.   :1125.000   Max.   :759.999         
+##  NA&#39;s   :14274     NA&#39;s   :21040    NA&#39;s   :20242      NA&#39;s   :20085           
+##  female_svl_at_maturity_cm female_body_mass_at_maturity_g no_sex_svl_cm   
+##  Min.   :  2.85            Mode:logical                   Min.   :   1.7  
+##  1st Qu.:  4.90            NA&#39;s:21322                     1st Qu.:   5.7  
+##  Median :  6.00                                           Median :   7.7  
+##  Mean   : 18.69                                           Mean   :  20.0  
+##  3rd Qu.:  8.40                                           3rd Qu.:  11.0  
+##  Max.   :580.00                                           Max.   :3300.0  
+##  NA&#39;s   :21120                                            NA&#39;s   :16052   
+##  no_sex_maturity_d
+##  Min.   :   33.0  
+##  1st Qu.:  365.3  
+##  Median :  913.1  
+##  Mean   : 1604.5  
+##  3rd Qu.: 2008.9  
+##  Max.   :14610.0  
+##  NA&#39;s   :20860</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Use <code>naniar</code> to visualize the number of NA’s in each
+variable. Which variables have the most NA’s?</li>
+</ol>
+<pre class="r"><code>amniota %&gt;%
+  gg_miss_var() +
+  theme(axis.text.y = element_text(size=7))</code></pre>
+<p><img role="img" src="data:image/png;base64,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" width="672" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Calculate the number of NAs in the <code>egg_mass_g</code> column
 sorted by taxonomic class; i.e. how many NA’s are present in the
 <code>egg_mass_g</code> column in birds, mammals, and reptiles? Does
 this results make sense biologically? How do these results affect your
-interpretation of NA’s?</p></li>
+interpretation of NA’s?</li>
 </ol>
+<pre class="r"><code>amniota %&gt;%
+  select(class, egg_mass_g) %&gt;% 
+  group_by(class) %&gt;%
+  miss_var_summary() %&gt;% 
+  arrange(desc(n_miss))</code></pre>
+<pre><code>## # A tibble: 3 × 4
+## # Groups:   class [3]
+##   class    variable   n_miss pct_miss
+##   &lt;chr&gt;    &lt;chr&gt;       &lt;int&gt;    &lt;num&gt;
+## 1 Reptilia egg_mass_g   6040     92.0
+## 2 Mammalia egg_mass_g   4953    100  
+## 3 Aves     egg_mass_g   4914     50.1</code></pre>
 </div>
 <div id="knit-and-upload" class="section level2">
 <h2>Knit and Upload</h2>

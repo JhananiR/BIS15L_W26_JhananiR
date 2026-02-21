@@ -31,16 +31,55 @@ amniota <- read_csv("data/amniota.csv") %>%
 glimpse(amniota)
 ```
 
+NA's represented as -999.
 
 2. Make any necessary replacements in the data such that all NA's appear as "NA". 
+```{r}
+amniota <- read_csv("data/amniota.csv",  na="-999")
+```
+```{r}
+glimpse(amniota)
+```
 
 3. How many total NA's are in the data set? Use the package `naniar` to produce a summary, including percentages, of missing data in each column for the `amniota` data.
+```{r}
+amniota %>%
+  miss_var_summary()
+```
+
 
 4. Double check your replacement using `summary`. Do you see any other potential issues? If so, fix them.
+```{r}
+summary(amniota)
+```
+
+The female maturity age column has a minimum value of -30258.7, which doesn't make sense biologically. So, I'll replace it with NA's.
+
+```{r}
+amniota <- amniota %>%
+  mutate(across(where(is.numeric), ~ifelse(. < 0, NA, .)))
+```
+
+```{r}
+summary(amniota)
+```
 
 5. Use `naniar` to visualize the number of NA's in each variable. Which variables have the most NA's?
+```{r}
+amniota %>%
+  gg_miss_var() +
+  theme(axis.text.y = element_text(size=7))
+```
 
 6. Calculate the number of NAs in the `egg_mass_g` column sorted by taxonomic class; i.e. how many NA's are present in the `egg_mass_g` column in birds, mammals, and reptiles? Does this results make sense biologically? How do these results affect your interpretation of NA's?
+```{r}
+amniota %>%
+  select(class, egg_mass_g) %>% 
+  group_by(class) %>%
+  miss_var_summary() %>% 
+  arrange(desc(n_miss))
+```
+
 
 ## Knit and Upload
 Please knit your work as an .html file and upload to Canvas. Homework is due before the start of the next lab. No late work is accepted. Make sure to use the formatting conventions of RMarkdown to make your report neat and clean! 
