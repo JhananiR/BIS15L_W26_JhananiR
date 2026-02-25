@@ -131,7 +131,7 @@ leaflet(spiders) %>%
     radius=2,
     stroke = FALSE,
     fillOpacity = 0.7
-  ) %>% 
+  ) %>%                                                                       
   addScaleBar(position="bottomleft") %>% 
   fitBounds(lng1=lon_min, lat1=lat_min,
             lng2=lon_max, lat2=lat_max)
@@ -157,6 +157,7 @@ grizzly %>%
   select(latitude, longitude) %>% 
   summary()
 ```
+
 ```{r}
 lat <- c(55.02, 70.37)
 long <- c(-166.2, -131.3)
