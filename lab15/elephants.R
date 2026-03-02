@@ -2,7 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(ggplot2)
 
-data <- read.csv("elephants.csv", stringsAsFactors = FALSE)
+data <- read.csv("elephants.csv")
 
 data$age <- as.numeric(data$age)
 data$height <- as.numeric(data$height)

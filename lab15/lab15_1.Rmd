@@ -101,18 +101,22 @@ server <- function(input, output, session) {
   
   output$plot <- renderPlot({
     
-    msleep %>% 
-      filter(vore != "NA") %>% 
-      ggplot(aes(x=vore, y=.data[[input$y]], 
-                 fill=vore))+
-      geom_boxplot(alpha=0.75)+
-      labs(title="Sleep Variables by Vore Type",
-           x = "Vore",
-           fill="Vore Type")+
-      theme_minimal()
+    ggplot(data, 
+           aes(x = sex, 
+               y = .data[[input$variable]], 
+               fill = sex)) +
+      geom_boxplot(alpha = 0.7) +
+      labs(
+        title = paste("Range of", 
+                      tools::toTitleCase(input$variable), 
+                      "by Sex"),
+        x = "Sex",
+        y = tools::toTitleCase(input$variable)
+      ) +
+      theme_minimal(base_size = 14) +
+      theme(legend.position = "none")
   })
 }
-
 shinyApp(ui, server)
 ```
 
