@@ -97,7 +97,14 @@ Lets go back to our home directory
 cd ../
 ```
 
+type cd to go to home directory
 *You can also navigate to your home directory by just using `cd` without any arguments.*
+
+
+get to lab 16 folder?
+cd
+scc2102-03:~ jramkuma$ cd Desktop/BIS15L_W26_jramkumar/lab16/
+scc2102-03:lab16 jramkuma$ 
 
 
 Lets navigate to our repository folder we can use `cd`. This is similar to setwd() in R. Please navigate to the lab16 folder on your Terminal. 
@@ -122,6 +129,8 @@ Now lets move all of our data files into the data folder. We can use the `mv` co
 # mv stands for move
 mv e.coli_genbank.fasta data/
 ```
+
+history gives all previous commands!!
 
 We can move more than one file at a time by using the `*` wildcard. The wildcard `*` represents any string of characters. This allows us to move all files that share a common pattern in their name. For example, if we wanted to move all files that end with .fasta into the data folder we could use the following command:
 ```{}
@@ -149,13 +158,13 @@ Move can also be used to rename files. For example, if we wanted to rename the b
 Viewing files in the terminal . . .
 ```{}
 # head stands for head of the file, similar to the R command head()
-
+#shows first ten lines
 
 ```
 
 ```{}
 # tail stands for tail of the file, similar to the R command tail()
-
+# last 10 files
 
 ```
 
@@ -173,6 +182,9 @@ Viewing files in the terminal . . .
 
 ```{}
 # grep stands for global regular expression print, it searches for a pattern in a file and prints the lines that match the pattern. 
+#grep ">" e.coli_genbank.fasta 
+#>NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome
+#^ printed line with the ">" character
 
 
 ```
