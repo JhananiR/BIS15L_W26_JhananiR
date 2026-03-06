@@ -91,7 +91,7 @@ There are five main types of BLAST, each designed for a specific combination of 
    - **Accession Number** — a unique identifier for the database entry that matched your query. You can click on this to learn more about the sequence.
    
 7. Check the **Select All** box. Click on Download and select the **Alginment Descrptions CSV**. Download the results in CSV format. Using the command line move the file into your "data/blast_results" folder and rename the file to "genome01_blastn.csv".
-```{bash}
+```{}
 mv genome01_blastn.csv BIS15L_W26_jramkumar/lab16/data/blast_results/
 ls BIS15L_W26_jramkumar/lab16/data/blast_results/
 ```
