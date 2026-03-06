@@ -444,8 +444,11 @@ will fill in if it is distinct.</strong></p>
 <pre><code># the ../ represents the previous directory
 
 cd ../</code></pre>
-<p><em>You can also navigate to your home directory by just using
-<code>cd</code> without any arguments.</em></p>
+<p>type cd to go to home directory <em>You can also navigate to your
+home directory by just using <code>cd</code> without any
+arguments.</em></p>
+<p>get to lab 16 folder? cd scc2102-03:~ jramkuma$ cd
+Desktop/BIS15L_W26_jramkumar/lab16/ scc2102-03:lab16 jramkuma$</p>
 <p>Lets navigate to our repository folder we can use <code>cd</code>.
 This is similar to setwd() in R. Please navigate to the lab16 folder on
 your Terminal.</p>
@@ -468,6 +471,7 @@ mkdir data/</code></pre>
 the <code>mv</code> command to move files.</p>
 <pre><code># mv stands for move
 mv e.coli_genbank.fasta data/</code></pre>
+<p>history gives all previous commands!!</p>
 <p>We can move more than one file at a time by using the <code>*</code>
 wildcard. The wildcard <code>*</code> represents any string of
 characters. This allows us to move all files that share a common pattern
@@ -484,10 +488,10 @@ rename the blast output file “e.coli_coding_seq.fasta” to
 <pre><code></code></pre>
 <p>Viewing files in the terminal . . .</p>
 <pre><code># head stands for head of the file, similar to the R command head()
-
+#shows first ten lines
 </code></pre>
 <pre><code># tail stands for tail of the file, similar to the R command tail()
-
+# last 10 files
 </code></pre>
 <pre><code># less is a command that allows you to view the contents of a file one page at a time
 
@@ -496,6 +500,9 @@ rename the blast output file “e.coli_coding_seq.fasta” to
 
 </code></pre>
 <pre><code># grep stands for global regular expression print, it searches for a pattern in a file and prints the lines that match the pattern. 
+#grep &quot;&gt;&quot; e.coli_genbank.fasta 
+#&gt;NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome
+#^ printed line with the &quot;&gt;&quot; character
 
 </code></pre>
 </div>
