@@ -49,63 +49,71 @@ A patient has been admitted to the hospital with a severe and rapidly progressin
 You will use BLAST, a tool used in real clinical and research microbiology labs, to compare this unknown sequence against all known biological sequences in the NCBI database.
 
 **1. Read the "gene of interest" sequence from the `goi_01.txt` file into R using the Biostrings package. Store this in an object called `query_seq`.What type sequence is this? (DNA, RNA or Protien) **
-```{r}
-
-```
-
-```{r}
-
-```
-
 
 **2.Perform a blastx search using `goi_01.txt` as the query and the "core_nt" database. Download the cluster table results in CSV format, change the name to "goi_01_blastx.csv" and store in the homework/data folder. Read the csv file into R and clean the column names. Save the cleaned data frame as goi_01_blastx.**
-```{r}
 
+```{r}
+goi_01_blastx <- read_csv("data/goi_01_blastx.csv") %>% 
+  clean_names()
 ```
 
 ```{r}
-
+names(goi_01_blastx)
 ```
 
 **3.Display the top 10 blastx hits, based on e_value, for this blastx search? (Include the Scientific Name, Cluster Anscestor, Cluster Representative Sequence, Max Score, Query Cover, E value and Percent Identity)**
 ```{r}
-
+goi_01_blastx %>%
+  select(scientific_name, cluster_ancestor, representative_sequence, 
+         max_score, query_cover, e_value, per_ident) %>% 
+  head(e_value, n = 10)
 ```
  
 
 **4. create a plot that shows the different in percent identity for each Scientific Name of the top 10 blastx hits. Make sure to label your axes and give your plot a title.**
 ```{r}
-
+goi_01_blastx %>%
+    slice_min(e_value, n = 10) %>%
+  ggplot(aes(x = reorder(scientific_name, per_ident), 
+             y = per_ident, 
+             fill = scientific_name)) +
+  geom_bar(stat = "identity", alpha = 0.8) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none") +
+  labs(x = "Scientific Name", 
+       y = "Percent Identity", 
+       title = "Percent Identity for Top 10 BLASTx Hits")
 ```
 
 
 **5 Perform a blastn search using `goi_01.txt` as the query and the "core_nt" database. Download the alignment description in CSV format, change the name to "goi_01_blastn.csv" and store in the homework/data folder. Read the csv file into R and clean the column names. Save the cleaned data frame as goi_01_blastn.**
 ```{r}
-
+goi_01_blastn <- read_csv("data/goi_01_blastn.csv") %>% 
+  clean_names()
 ```
 
 ```{r}
-
+names(goi_01_blastn)
 ```
+
 
 **6. What was the top blastn hit, based on e_value, for this blastn search? (Include the Cluster Ancestor, Cluster, Representative Sequence, Max Score, Query Cover, E value, Percent Identity and Accession Link)**
 ```{r}
-
+goi_01_blastn %>%
+  select(scientific_name, max_score, query_cover, e_value, per_ident, accession) %>% 
+  arrange(e_value) %>% 
+  slice_head(n=1)
 ```
 
 **7. Based on the blastx and blastn results, what do you think this gene is and what bacteria do you think it came from?**
-```{}
-
-```
+Based on the BLASTx results, this gene appears to encode a protein conserved across the Enterobacteriaceae family. The BLASTn top hit of Yersinia pestis suggests the nucleotide sequence is most similar to this organism. Therefore, this gene likely originated from a bacterium in the Enterobacteriaceae family, most likely Yersinia pestis or a closely related organism."
 
 **8. For the top blastn hit, click on the accession link for this bacteria and download the coding sequences as a FASTA Protein file. Read the fasta file into R using the Biostrings package and store it in an object called `goi_blastn_hit`.**
 ```{r}
-
+goi_blastn_hit <- readAAStringSet("data/goi_blastn_hit.fasta")
 ```
 
-```{r}
-
-```
 
 **9. From the same organism, identify 5 other annotated genes? Do these genes suggest about the biology or virulence of this bacterium?** *Annotated genes can be found in the "CDS" section of the GenBank file. You can also find genes by going to summary page for the organism and looking at the "View annotated genes" section.*
 ```{r}
