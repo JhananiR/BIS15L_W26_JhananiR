@@ -18,7 +18,7 @@ Answer the following questions and complete the exercises in RMarkdown. Please e
 
 Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
 ```{r}
-install.packages("rlang")
+library(rlang)
 library(tidyverse)
 ```
 
@@ -103,11 +103,12 @@ names(goi_01_blastn)
 goi_01_blastn %>%
   select(scientific_name, max_score, query_cover, e_value, per_ident, accession) %>% 
   arrange(e_value) %>% 
-  slice_head(n=1)
+  head(n=1)
 ```
 
 **7. Based on the blastx and blastn results, what do you think this gene is and what bacteria do you think it came from?**
-Based on the BLASTx results, this gene appears to encode a protein conserved across the Enterobacteriaceae family. The BLASTn top hit of Yersinia pestis suggests the nucleotide sequence is most similar to this organism. Therefore, this gene likely originated from a bacterium in the Enterobacteriaceae family, most likely Yersinia pestis or a closely related organism."
+Based on the BLASTx results, this gene appears to encode a protein in the Enterobacteriaceae family. The BLASTn top hit of Yersinia pestis suggests the nucleotide sequence is most similar to this organism. 
+
 
 **8. For the top blastn hit, click on the accession link for this bacteria and download the coding sequences as a FASTA Protein file. Read the fasta file into R using the Biostrings package and store it in an object called `goi_blastn_hit`.**
 ```{r}
@@ -116,15 +117,11 @@ goi_blastn_hit <- readAAStringSet("data/goi_blastn_hit.fasta")
 
 
 **9. From the same organism, identify 5 other annotated genes? Do these genes suggest about the biology or virulence of this bacterium?** *Annotated genes can be found in the "CDS" section of the GenBank file. You can also find genes by going to summary page for the organism and looking at the "View annotated genes" section.*
-```{r}
-
-```
+5 other annotated genes from Yersinia pestis include: pla, caf1, ymt, yopE/yopH, and irp2. These genes suggest that Yersinia pestis has several virulence factors that contribute to its pathogenicity with multiple mechanisms to evade the host immune system and establish infection.
 
 
 **10. Now that you have an idea of this bacteria's identity, what illness/disease do you think the patient has? What is the historical or public health significance of this disease? Based on the gene you identified, what role might this gene play in pathogenicity?**
-```{}
-
-```
+Based on the BLAST results, the patient is likely infected with Yersinia pestis, the causative agent of plague. Plague has significant historical and public health importance, having caused several devastating pandemics throughout history, including the Black Death in the 14th century. The gene identified in this analysis may play a role in the bacterium's ability to evade the host immune system or contribute to its virulence, potentially making it a target for therapeutic intervention.
 
 
 ## Knit and Upload

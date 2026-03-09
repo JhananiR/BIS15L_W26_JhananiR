@@ -12,6 +12,10 @@ output:
 *At the end of this exercise, you will be able to:*  
 1. Use `shinydashboard` to improve ui aesthetics.  
 
+```{r}
+R.version$major
+```
+
 ## Load the Libraries  
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
