@@ -17,15 +17,20 @@ knitr::opts_chunk$set(echo = TRUE)
 Answer the following questions and complete the exercises in RMarkdown. Please embed all of your code and push your final work to your repository. Your final lab report should be organized, clean, and run free from errors. Remember, you must remove the `#` for the included code chunks to run. Be sure to add your name to the author header above. For any included plots, make sure they are clearly labeled. You are free to use any plot type that you feel best communicates the results of your analysis.  
 
 Make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
+```{r}
+install.packages("rlang")
+library(tidyverse)
+```
 
 ### Install Biostrings
 ```{r,bquiet=TRUE, message=FALSE, warning=FALSE}
-#if (!requireNamespace("BiocManager", quietly = TRUE))
-#  install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
-#BiocManager::install("Biostrings")
+BiocManager::install("Biostrings")
 ```
-## Load the libraries
+
+Load the libraries
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(janitor)
