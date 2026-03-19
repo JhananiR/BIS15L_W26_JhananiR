@@ -53,7 +53,7 @@ polar_bears_year <- polar_bears %>%
   summarize(count = n()) %>% 
   ggplot(aes(x=year, y=count, color=popn))+
   geom_line()+
-  geom_point(shape = 5) +
+  geom_point(shape = 16)+
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(title = "Sampling of Polar Bears by Year", x="Year", y="Count", color = "Population")
 polar_bears_year
@@ -82,7 +82,7 @@ polar_bears %>%
   summarize(count = n()) %>% 
   ggplot(aes(x=year, y=count, color=popn))+
   geom_line()+
-  geom_point(shape = 5) +
+  geom_point(shape = 16) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(title = "Number of Fasting Bears by Year and Population", x="Year", y="Number of Fasting Bears", color = "Population")
 ```
