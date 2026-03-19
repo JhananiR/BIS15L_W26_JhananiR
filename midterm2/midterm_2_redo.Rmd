@@ -1,0 +1,168 @@
+---
+title: "Midterm 2 Redo"
+name: "Jhanani Ramkumar"
+output: html_document
+date: "2026-03-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(naniar)
+library(ggmap)
+library(lubridate)
+library(shiny)
+``` 
+
+```{r}
+register_stadiamaps("06cd37b9-1de9-4a29-a487-f35c527a975f", write = FALSE)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+polar_bears <- 
+  read_csv("data/polarBear_serumUreaCreatinine_beaufortChukchi_rode.csv") %>% 
+  clean_names() %>% 
+  select(-den_method, -no_cubs, -cub_age) %>%
+  filter(age_class==c("A", "S")) %>% 
+  mutate(sex=toupper(sex), 
+         age_class=toupper(age_class))
+```
+
+3. (6 points) Is sampling even for both sexes? Make a count the shows the number of males and females sampled by population and make a plot to visualize the counts.
+```{r}
+polar_bears %>% 
+  ggplot(aes(x=popn, fill = sex))+
+  geom_bar()+
+  labs(title = "Sampling of Male vs Female Polar Bear Population", x="Population", y="Count", fill = "Sex")
+```
+
+No, the sampling isn't even, there are more female bears sampled in the data. 
+
+4. (6 points) How many bears were sampled in each year for both populations? Make a line plot(s) to visualize sampling by year for both populations. (hint: you will need to pull apart the date to get the year in its own column)
+```{r}
+polar_bears_year <- polar_bears %>% 
+  separate(capture_date, into = c("year", "month", "day"), sep = "-") %>% 
+  group_by(popn, year) %>% 
+  summarize(count = n()) %>% 
+  ggplot(aes(x=year, y=count, color=popn))+
+  geom_line()+
+  geom_point(shape = 5) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(title = "Sampling of Polar Bears by Year", x="Year", y="Count", color = "Population")
+polar_bears_year
+```
+
+```{r}
+polar_bears <- polar_bears %>%
+  mutate(un_creat_ratio = (urea_nitrogen * 0.466) / creatinine)
+polar_bears
+```
+
+```{r}
+polar_bears <- polar_bears %>%
+  mutate(fasting=case_when(un_creat_ratio<=10 ~ "fasting",
+                           un_creat_ratio> 10 ~ "not_fasting"))
+polar_bears
+```
+
+
+8. (6 points) The authors found that the number of fasting bears increased in the SB population but decreased in the CS population. Make a plot(s) that shows the number of fasting bears by year for both populations to visualize this trend.
+```{r}
+polar_bears %>% 
+  separate(capture_date, into = c("year", "month", "day"), sep = "-") %>%
+  filter(fasting == "fasting") %>%
+  group_by(popn, year) %>% 
+  summarize(count = n()) %>% 
+  ggplot(aes(x=year, y=count, color=popn))+
+  geom_line()+
+  geom_point(shape = 5) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(title = "Number of Fasting Bears by Year and Population", x="Year", y="Number of Fasting Bears", color = "Population")
+```
+
+9. (8 points) Where are the polar bears used in this study located? Make a static (not leaflet) distribution map that shows the locations of  bears by population. (hint: use `color=popn` in the `aes()` of `geom_point()`)
+```{r}
+polar_bears %>% 
+  select(lat, long) %>% 
+  summary()
+```
+```{r}
+lat <- c(62.46, 72.7)
+long <- c(-172.2, -134.8)
+bbox <- make_bbox(long, lat, f=0.03)
+```
+
+```{r}
+map1 <- get_stadiamap(bbox, maptype="stamen_terrain", zoom=6)
+ggmap(map1)+
+  geom_point(data=polar_bears, aes(x=long, y=lat, color=popn), size=0.75, alpha=0.8)+
+  labs(x="Longitude", y="Latitude", title="Locations of Polar Bears")
+```
+
+10. (10 points) Build a simple shiny app that shows the range of `un_creat_ratio` values for both populations. The user should be able to select the fill variable and choose between sex, mating, age_class, denning, and fasting. Please use the code chunk below so that your exam knits.
+```{r, eval=F, echo=T}
+library(shiny)
+
+ui <- fluidPage(
+  
+    selectInput("x", 
+                "Select Variable",
+                choices = c("sex", 
+                            "mating",
+                            "age_class",
+                            "denning",
+                            "fasting"),
+                selected = "sex"),
+  
+    plotOutput("plot", width="500px", height="400px")
+  )
+
+server <- function(input, output, session) {
+  
+output$plot <- renderPlot({
+    
+      polar_bears %>% 
+      ggplot(aes(x = .data[[input$x]], 
+               y = un_creat_ratio, 
+               fill = .data[[input$x]])) +
+      geom_boxplot(alpha = 0.7) +
+      labs(
+        title = paste("Range of UN:Creatinine Ratio by", tools::toTitleCase(input$x)),
+        x = tools::toTitleCase(input$x),
+        y = "UN:Creatinine Ratio",
+        fill = tools::toTitleCase(input$x)
+      ) +
+      theme_minimal(base_size = 14) +
+      theme(legend.position = "none")
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
